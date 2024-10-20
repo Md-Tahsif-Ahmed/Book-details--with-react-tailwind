@@ -12,6 +12,8 @@
         <li style="color: red;">Open the command prompt and write <code>npm install</code></li>
         <li style="color: red;">After installing, write <code>npm install vite</code></li>
         <li style="color: red;">Then write <code>npm run dev</code></li>
+        <li style="color: red;">or Live Link: https://book-details-with-react-tailwind.vercel.app/</li>
+        
     </ol>
 </body>
 </html>
