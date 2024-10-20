@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const BookList = ({ books, toggleWishlist, wishlist }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-10">
       <AnimatePresence>
         {books.map(book => (
           <motion.div

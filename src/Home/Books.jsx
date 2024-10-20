@@ -63,9 +63,10 @@ const Books = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className=" mx-auto p-4 max-w-screen-7xl">
       <h1 className="text-2xl mb-4">Book List</h1>
-      
+  <div className="flex items-center justify-between space-x-6">
+        
       {/* Search Input */}
       <input
         type="text"
@@ -82,12 +83,15 @@ const Books = () => {
         <option value="science fiction">Science Fiction</option>
         <option value="horror">Horror</option>
       </select>
+  </div>
 
       {/* Book List */}
-      <BookList books={currentBooks} toggleWishlist={toggleWishlist} wishlist={wishlist} />
+     <div className=" flex justify-center items-center">
+     <BookList books={currentBooks} toggleWishlist={toggleWishlist} wishlist={wishlist} />
+     </div>
 
       {/* Pagination */}
-      <div className="flex justify-between mt-4">
+      <div className="flex justify-center items-center space-x-2 mt-4">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}

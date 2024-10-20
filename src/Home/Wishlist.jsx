@@ -25,16 +25,17 @@ const Wishlist = () => {
       fetchWishlistedBooks();
     }
   }, [wishlist]);
-
+  if (!books) return <p>Loading...</p>;
   return (
     <>
     <Navbar></Navbar>
-    <div className="container mx-auto p-4">
+    <div className="mx-auto p-4">
       <h1 className="text-2xl mb-4"> Wishlist</h1>
+      <div className="flex items-center justify-center">
       {wishlist.length === 0 ? (
         <p>wishlist is empty.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
           {books.map(book => (
             <Book 
               key={book.id} 
@@ -45,6 +46,7 @@ const Wishlist = () => {
           ))}
         </div>
       )}
+      </div>
     </div>
     </>
   );
