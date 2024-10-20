@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -17,7 +18,9 @@ const BookDetail = () => {
   if (!book) return <p>Loading...</p>;
 
   return (
-    <div className="container mx-auto p-4">
+   <>
+   <Navbar></Navbar>
+   <div className="container mx-auto p-4">
       <h1 className="text-2xl">{book.title}</h1>
       <img 
             src={book.formats['image/jpeg']} 
@@ -28,6 +31,7 @@ const BookDetail = () => {
       <p>Genre: {book.subjects.join(', ')}</p>
       <p>{book.description}</p>
     </div>
+   </>
   );
 };
 

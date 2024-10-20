@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Book from './Book';
+import Navbar from './Navbar';
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -26,10 +27,12 @@ const Wishlist = () => {
   }, [wishlist]);
 
   return (
+    <>
+    <Navbar></Navbar>
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl mb-4">Your Wishlist</h1>
+      <h1 className="text-2xl mb-4"> Wishlist</h1>
       {wishlist.length === 0 ? (
-        <p>Your wishlist is empty.</p>
+        <p>wishlist is empty.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {books.map(book => (
@@ -43,6 +46,7 @@ const Wishlist = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
