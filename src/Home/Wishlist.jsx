@@ -16,38 +16,54 @@ const Wishlist = () => {
   // Fetch books by ID stored in wishlist
   useEffect(() => {
     const fetchWishlistedBooks = async () => {
-      const promises = wishlist.map(id => axios.get(`https://gutendex.com/books/${id}`));
-      const responses = await Promise.all(promises);
-      setBooks(responses.map(response => response.data));
+      if (wishlist.length) {
+        const promises = wishlist.map(id => axios.get(`https://gutendex.com/books/${id}`));
+        const responses = await Promise.all(promises);
+        setBooks(responses.map(response => response.data));
+      } else {
+        setBooks([]);  // Clear books when the wishlist is empty
+      }
     };
 
-    if (wishlist.length) {
-      fetchWishlistedBooks();
-    }
-  }, [wishlist]);
-  if (!books) return <p>Loading...</p>;
+    fetchWishlistedBooks();
+  }, [wishlist]); // Depend on wishlist changes
+
+  // Remove book from wishlist
+  const removeFromWishlist = (bookId) => {
+    const updatedWishlist = wishlist.filter(id => id !== bookId);
+    setWishlist(updatedWishlist);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+
+    // Optimistic update: Remove the book from the displayed list immediately
+    setBooks(books.filter(book => book.id !== bookId));
+  };
+
+  if (!books.length) return <p>Loading...</p>;
+
   return (
     <>
-    <Navbar></Navbar>
-    <div className="mx-auto p-4">
-      <h1 className="text-2xl mb-4"> Wishlist</h1>
-      <div className="flex items-center justify-center">
-      {wishlist.length === 0 ? (
-        <p>wishlist is empty.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          {books.map(book => (
-            <Book 
-              key={book.id} 
-              book={book} 
-              toggleWishlist={() => {}} // Disable wishlist toggle on this page
-              isWishlisted={true} 
-            />
-          ))}
+      <Navbar />
+      <div className="mx-auto p-4">
+        <h1 className="text-2xl mb-4">Wishlist</h1>
+        <div className="flex items-center justify-center">
+          {wishlist.length === 0 ? (
+            <p>Your wishlist is empty.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+              {books.map(book => (
+                <div key={book.id}>
+                  <Book 
+                    book={book} 
+                    toggleWishlist={() => removeFromWishlist(book.id)} // Pass remove function
+                    isWishlisted={true}
+                  />
+                  
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
       </div>
-    </div>
     </>
   );
 };
