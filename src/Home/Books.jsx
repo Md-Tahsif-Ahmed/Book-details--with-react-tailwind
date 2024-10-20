@@ -1,16 +1,16 @@
-// Books.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import BookList from './BookList';
 
 const Books = () => {
   const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || ''); // Load searchTerm from localStorage
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(10);
-  const [genre, setGenre] = useState('');
+  const [genre, setGenre] = useState(localStorage.getItem('genre') || ''); // Load genre from localStorage
   const [wishlist, setWishlist] = useState([]);
 
+  // Fetch books based on search term and genre
   useEffect(() => {
     const fetchBooks = async () => {
       const res = await axios.get(`https://gutendex.com/books?search=${searchTerm}&topic=${genre}`);
@@ -24,6 +24,12 @@ const Books = () => {
     const storedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     setWishlist(storedWishlist);
   }, []);
+
+  // Save search term and genre to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('searchTerm', searchTerm);
+    localStorage.setItem('genre', genre);
+  }, [searchTerm, genre]);
 
   // Toggle wishlist functionality
   const toggleWishlist = (bookId) => {
@@ -46,10 +52,12 @@ const Books = () => {
 
   const totalPages = Math.ceil(books.length / booksPerPage);
 
+  // Handle search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Handle genre selection change
   const handleGenreChange = (e) => {
     setGenre(e.target.value);
   };
@@ -68,9 +76,8 @@ const Books = () => {
       />
       
       {/* Genre Select */}
-      <select onChange={handleGenreChange} className="p-2 border rounded mb-4 w-full">
+      <select onChange={handleGenreChange} value={genre} className="p-2 border rounded mb-4 w-full">
         <option value="">All Genres</option>
-        {/* You can add more genre options */}
         <option value="fiction">Fiction</option>
         <option value="science fiction">Science Fiction</option>
         <option value="horror">Horror</option>
