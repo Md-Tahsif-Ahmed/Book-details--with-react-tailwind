@@ -1,22 +1,17 @@
+// BookList.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Book from './Book';
 
-const BookList = ({ books }) => {
+const BookList = ({ books, toggleWishlist, wishlist }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {books.map((book) => (
-        <div key={book.id} className="border p-4 rounded">
-          {/* <img src={book.cover?.url} alt={book.title} className="w-full h-64 object-cover" /> */}
-          <img 
-            src={book.formats['image/jpeg']} 
-            alt={book.title} 
-            className="w-32 h-48 object-cover mb-4"
-            />
-          <h2 className="text-xl">{book.title}</h2>
-          <p>Author: {book.authors.map(author => author.name).join(', ')}</p>
-          <p>Genre: {book.subjects.join(', ')}</p>
-          <Link to={`/book/${book.id}`} className="text-blue-500">View Details</Link>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {books.map(book => (
+        <Book
+          key={book.id}
+          book={book}
+          toggleWishlist={toggleWishlist}
+          isWishlisted={wishlist.includes(book.id)}
+        />
       ))}
     </div>
   );

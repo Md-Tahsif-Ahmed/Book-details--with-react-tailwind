@@ -1,70 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import BookList from './BookList';
+// Book.jsx
+import React from 'react';
 
-const Book = () => {
-  const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage] = useState(10);
-  const [genre, setGenre] = useState('');
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const res = await axios.get(`https://gutendex.com/books?search=${searchTerm}&topic=${genre}`);
-      setBooks(res.data.results);
-    };
-    fetchBooks();
-  }, [searchTerm, genre]);
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleGenreChange = (e) => {
-    setGenre(e.target.value);
-  };
-
-  // Pagination logic
-  const indexOfLastBook = currentPage * booksPerPage;
-  const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-
-  const totalPages = Math.ceil(books.length / booksPerPage);
-
+const Book = ({ book, toggleWishlist, isWishlisted }) => {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl mb-4">Book List</h1>
-      <input
-        type="text"
-        placeholder="Search by title..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="p-2 border rounded mb-4"
+    <div className="border p-4 rounded-lg flex flex-col items-center">
+      <img 
+        src={book.formats['image/jpeg']} 
+        alt={book.title} 
+        className="w-32 h-48 object-cover mb-4"
       />
-      <select onChange={handleGenreChange} className="p-2 border rounded mb-4">
-        <option value="">All Genres</option>
-        {/* Add genre options here */}
-      </select>
-
-      <BookList books={currentBooks} />
-
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="p-2 bg-blue-500 text-white rounded"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="p-2 bg-blue-500 text-white rounded"
-        >
-          Next
-        </button>
-      </div>
+      <h2 className="text-lg font-bold mb-2">{book.title}</h2>
+      <p className="text-sm mb-2">Author: {book.authors.map(author => author.name).join(', ')}</p>
+      <p className="text-sm mb-2">Genres: {book.subjects.join(', ')}</p>
+      <p className="text-sm text-gray-500">ID: {book.id}</p>
+      <button 
+        onClick={() => toggleWishlist(book.id)}
+        className={`p-2 mt-2 rounded ${isWishlisted ? 'bg-red-500 text-white' : 'bg-gray-300'}`}
+      >
+        {isWishlisted ? '❤️ Wishlisted' : '♡ Add to Wishlist'}
+      </button>
     </div>
   );
 };

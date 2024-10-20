@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
-import Book from './Book';
+import Book from './Books';
 
 const Homepage = () => {
     return (
